@@ -6,12 +6,15 @@ class DC_Motor:
         self.ENA = ENA_PORT
         self.IN1 = IN1_PORT
         self.IN2 = IN2_PORT
+        self.speed = 0
 
     def start(self):
         GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(self.ENA, GPIO.OUT, initial=GPIO.HIGH)
+        GPIO.setup(self.ENA, GPIO.OUT)
         GPIO.setup(self.IN1, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.IN2, GPIO.OUT, initial=GPIO.LOW)
+        self.pwm = GPIO.PWM(self.ENA, 50)
+        self.pwm.start(self.speed)
 
     def forward(self):
         GPIO.output(self.IN1, GPIO.HIGH)
@@ -22,11 +25,18 @@ class DC_Motor:
         GPIO.output(self.IN2, GPIO.HIGH)
 
     def pause(self):
+        self.speed = 0
+        self.pwm.ChangeDutyCycle(self.speed)
         GPIO.output(self.IN1, GPIO.LOW)
         GPIO.output(self.IN2, GPIO.LOW)
 
+    def gear(self, number):
+        self.speed = number * 33
+        self.pwm.ChangeDutyCycle(self.speed)
+
     def stop(self):
-        GPIO.output(self.ENA, GPIO.LOW)
+        self.speed = 0
+        self.pwm.ChangeDutyCycle(self.speed)
         GPIO.output(self.IN1, GPIO.LOW)
         GPIO.output(self.IN2, GPIO.LOW)
         GPIO.cleanup()

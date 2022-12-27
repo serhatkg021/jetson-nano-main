@@ -1,54 +1,201 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loader</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        body {
+            background-color: lightgrey;
+        }
 
-    <title>Live Streaming Demonstration</title>
+        .loader {
+            position: fixed;
+            background: lightgrey;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            z-index: 10;
+
+        }
+
+        .loader img {
+            width: 100%;
+        }
+
+        .disppear {
+            animation: load 4s forwards;
+        }
+
+        @keyframes load {
+            100% {
+                opacity: 100%;
+                visibility: hidden;
+            }
+        }
+
+        .container {
+
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            background-color: lightgrey;
+        }
+
+        .controller {
+
+            width: 35%;
+            height: 500px;
+            margin: 2.5% 1% 2.5% 2.5%;
+        }
+
+        .videoscreen {
+            width: 60%;
+            height: 500px;
+            border-radius: 2%;
+            margin: 2.5% 2.5% 2.5% 0;
+        }
+
+        .switch-button {
+            background: rgba(255, 255, 255, 0.56);
+            border-radius: 30px;
+            overflow: hidden;
+            width: 240px;
+            text-align: center;
+            font-size: 18px;
+            letter-spacing: 1px;
+            color: #155fff;
+            position: relative;
+            padding-right: 120px;
+            position: relative;
+        }
+
+        .switch-button:before {
+            content: "Autonom";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .switch-button2:before {
+            content: "On";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .switch-button-checkbox {
+            cursor: pointer;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            z-index: 2;
+        }
+
+        .switch-button-checkbox:checked+.switch-button-label:before {
+            transform: translateX(120px);
+            transition: transform 300ms linear;
+        }
+
+        .switch-button-checkbox+.switch-button-label {
+            position: relative;
+            padding: 15px 0;
+            display: block;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .switch-button-checkbox+.switch-button-label:before {
+            content: "";
+            background: #fff;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            border-radius: 30px;
+            transform: translateX(0);
+            transition: transform 300ms;
+        }
+
+        .switch-button-checkbox+.switch-button-label .switch-button-label-span {
+            position: relative;
+        }
+    </style>
 </head>
 
 <body>
+    <div class="loader">
+        <img src="loadimage2.gif" alt="Loading">
+    </div>
     <div class="container">
-        <div class="row">
-
-            <div class='container'>
-                <h3>Test</h3>
-                <form>
-                    <a href=# id=test><button class='btn btn-default'>Test</button></a>
-                </form>
-
+        <div class="controller">
+            <h2>Otonom Car Controller</h2>
+            <hr />
+            <br />
+            <p>Car Status :</p>
+            <br />
+            <div class="switch-button">
+                <input class="switch-button-checkbox" type="checkbox" name="car_status"></input>
+                <label class="switch-button-label" for=""><span class="switch-button-label-span">Manuel</span></label>
             </div>
-            sdfasdfasd
-            <div class="col-lg-8  offset-lg-2">
-                <h3 class="mt-5">Live Streaming</h3>
-                <img src="{{ url_for('video_feed') }}" width="100%">
+            <br>
+            <p>Car Start :</p>
+            <br />
+            <div class="switch-button switch-button2">
+                <input class="switch-button-checkbox" type="checkbox" name="car_start"></input>
+                <label class="switch-button-label" for=""><span class="switch-button-label-span">Off</span></label>
             </div>
         </div>
+        <div class="videoscreen">
+            <h2>Live Streaming</h2>
+            <hr />
+            <br />
+            <img src="./loadimage2.gif" style="border-radius: 2%;" width="100%">
+            <!-- <img src="{{ url_for('video_feed') }}" style="border-radius: 2%;" width="100%"> -->
+        </div>
     </div>
-    <script src="./jquery.min.js"></script>
-    <script type=text/javascript>
-        document.onkeydown = checkKey;
-        var key = "";
-        function setStatus() {
-            $.getJSON('/set_status',
-                function(data) {
-              //do nothing
-            });
-        }
-        function clickKey(key) {
-            $.getJSON('/controller/' + key,
-                function(data) {
-              //do nothing
-            });
-        }
-        function checkKey(e) {
+</body>
 
+<script src="./jquery.min.js"></script>
+<script type=text/javascript>
+    // Yon ve Speed Tuslari
+    var key = "";
+    document.onkeydown = checkKey;
+    function clickKey(key) {
+        $.getJSON('/controller/' + key,
+            function(data) {
+          //do nothing
+        });
+    }
+    
+    function checkKey(e) {
+        if (!car_status.checked){
             e = e || window.event;
             if (e.keyCode == '38') {// && !key.includes("ileri")
                 console.log("ileri");
@@ -61,20 +208,88 @@
                 key = "geri"
             }
             else if (e.keyCode == '37' && !key.includes("sol")) {
-                // console.log("sol");
-                // clickKey("sol");
-                // key = "sol"
-                setStatus()
+                console.log("sol");
+                clickKey("sol");
+                key = "sol"
             }
             else if (e.keyCode == '39' && !key.includes("sağ")) {
                 console.log("sağ");
                 clickKey("sağ");  
                 key = "sağ"
             }
-
+            else if (e.keyCode == '32' && !key.includes("fren")) {
+                console.log("fren");
+                clickKey("fren");  
+                key = "fren"
+            }
+            else if (e.keyCode == '49' && !key.includes("vites1")) {
+                console.log("vites1");
+                clickKey("vites1");  
+                key = "vites1"
+            }
+            else if (e.keyCode == '50' && !key.includes("vites2")) {
+                console.log("vites2");
+                clickKey("vites2");  
+                key = "vites2"
+            }
+            else if (e.keyCode == '51' && !key.includes("vites3")) {
+                console.log("vites3");
+                clickKey("vites3");  
+                key = "vites3"
+            }
         }
+    }
+    // Yon bitis
+
+
+    // Status ve Start
+    var car_status = document.querySelector("input[name=car_status]");
+    var car_start = document.querySelector("input[name=car_start]");
+
+    function setStatus(key) {
+        $.getJSON('/set_status/' + key,
+            function(data) {
+          //do nothing
+        });
+    }
+    function setStart(key) {
+        $.getJSON('/set_start/' + key,
+            function(data) {
+          //do nothing
+        });
+    }
+
+    car_status.addEventListener('change', function () {
+        if (this.checked) {
+            setStatus('1');
+            console.log("otonom");
+        } else {
+            setStatus('0');
+            console.log("manuel");
+        }
+    });
+
+    car_start.addEventListener('change', function () {
+        if (this.checked) {
+            setStart('1');
+            console.log("on");
+        } else {
+            setStart('0');
+            console.log("off");
+        }
+    });
+    // Status ve Start Bitis
 </script>
 
-</body>
+
+<script type=text/javascript>
+    // CSS KISMI
+    
+    var loader = document.querySelector(".loader")
+    window.addEventListener("load", vanish);
+    function vanish() {
+        loader.classList.add("disppear");
+    }
+</script>
 
 </html>
