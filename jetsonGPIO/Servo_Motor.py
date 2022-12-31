@@ -26,18 +26,8 @@ class Servo_Motor:
     def rotate_right(self):  # sağa dönüş
         self.pwm.ChangeDutyCycle(global_variables.RIGHT_SERVO_ANGLE_VALUE)
 
-    def servo_rotate_value(rotate_value):
+    def servo_rotate_value(self, rotate_value):
         # gelen dönme değeri, -1 ile +1 arasında ki değere e göre sola veya sağa dönüş miktarı hesaplacanak
-        leftorright_rotate_value = 0
-        if -1 <= rotate_value < 0:
-            # servo 90 derece düz ise derece artarken sola azalırken sağa gidiyor diye düşünerek yapıyorum bu değişibilir
-            # 15 180 derece 7.5 90 derece dersek her 2.5 30 dereceye denk gelir yani 30 sola 30 sağa şeklinde yapıyorum.
-            leftorright_rotate_value = 10
-
-        elif 0 < rotate_value >= 1:
-            leftorright_rotate_value == 5
-
-        else:
-            leftorright_rotate_value = 7.5
-
-        return rotate_value
+        leftorright_rotate_value = (rotate_value * 6.25) * 0.4
+        leftorright_rotate_value = global_variables.DEFAULT_SERVO_ANGLE_VALUE - leftorright_rotate_value            
+        self.pwm.ChangeDutyCycle(leftorright_rotate_value)

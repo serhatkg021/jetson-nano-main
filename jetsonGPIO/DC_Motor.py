@@ -7,13 +7,14 @@ class DC_Motor:
         self.IN1 = IN1_PORT
         self.IN2 = IN2_PORT
         self.speed = 0
-
-    def start(self):
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.ENA, GPIO.OUT)
+        self.pwm = GPIO.PWM(self.ENA, 50)
+
+
+    def start(self):
         GPIO.setup(self.IN1, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.IN2, GPIO.OUT, initial=GPIO.LOW)
-        self.pwm = GPIO.PWM(self.ENA, 50)
         self.pwm.start(self.speed)
 
     def forward(self):
@@ -39,4 +40,4 @@ class DC_Motor:
         self.pwm.ChangeDutyCycle(self.speed)
         GPIO.output(self.IN1, GPIO.LOW)
         GPIO.output(self.IN2, GPIO.LOW)
-        GPIO.cleanup()
+        # GPIO.cleanup()

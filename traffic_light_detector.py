@@ -6,7 +6,6 @@ import imutils
 def colorDetect(image):
     returnData = [0, 0, 0, 0]  # 0: Red,  1: Yellow,  2: Green
     data = cv2.medianBlur(image, 5)
-    cv2.imshow("Original", data)
 
     dataHsv = cv2.cvtColor(data, cv2.COLOR_BGR2HSV)
 
