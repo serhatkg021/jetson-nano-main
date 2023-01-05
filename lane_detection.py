@@ -189,3 +189,4 @@ def lane_detec(image):
         # cv2.imshow("image", img)
     except:
         print("hata")
+        return " "

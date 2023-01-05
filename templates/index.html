@@ -104,6 +104,20 @@
             z-index: 3;
             pointer-events: none;
         }
+        
+        .switch-button3:before {
+            content: "Off";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            pointer-events: none;
+        }
 
         .switch-button-checkbox {
             cursor: pointer;
@@ -170,6 +184,13 @@
             <div class="switch-button switch-button2">
                 <input class="switch-button-checkbox" type="checkbox" name="car_start"></input>
                 <label class="switch-button-label" for=""><span class="switch-button-label-span">Off</span></label>
+            </div>
+            <br>
+            <p>Camera Status :</p>
+            <br />
+            <div class="switch-button switch-button3">
+                <input class="switch-button-checkbox" type="checkbox" name="camera_status"></input>
+                <label class="switch-button-label" for=""><span class="switch-button-label-span">On</span></label>
             </div>
         </div>
         <div class="videoscreen">
@@ -245,6 +266,7 @@
     // Status ve Start
     var car_status = document.querySelector("input[name=car_status]");
     var car_start = document.querySelector("input[name=car_start]");
+    var camera_status = document.querySelector("input[name=camera_status]");
 
     function setStatus(key) {
         $.getJSON('/set_status/' + key,
@@ -254,6 +276,13 @@
     }
     function setStart(key) {
         $.getJSON('/set_start/' + key,
+            function(data) {
+          //do nothing
+        });
+    }
+
+    function setCamera(key) {
+        $.getJSON('/set_camera/' + key,
             function(data) {
           //do nothing
         });
@@ -276,6 +305,16 @@
         } else {
             setStart('0');
             console.log("off");
+        }
+    });
+
+    camera_status.addEventListener('change', function () {
+        if (this.checked) {
+            setCamera('0');
+            console.log("cam_off");
+        } else {
+            setCamera('1');
+            console.log("cam_on");
         }
     });
     // Status ve Start Bitis

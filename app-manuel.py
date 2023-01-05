@@ -18,28 +18,28 @@ car = CarController(dc_motor=dc_controller, servo=servo_controller)
 
 def gen_frames():  # generate frame by frame from camera
 	ssd = SSD_Detection("ssd-mobilenet-v2")
-	camera = cv2.VideoCapture(0)
+	car.cam_start()
 	while True:
 		# Capture frame-by-frame
-		success, frame = camera.read()  # read the camera frame
-		frame = cv2.resize(frame, (640, 360))
-		if not success:
-			car.stop()
-			break
-		else:
-			if car.autonom:
-				object_status = ssd.detection(frame)
-				lane_status = lane_detec(frame)
-				# car.autonom_control(object_status)
-				car.autonom_control(object_status, lane_status)
-
-				ret, buffer = cv2.imencode('.jpg', object_status[0])
+		if car.camera.isOpened():
+			success, frame = car.camera.read()  # read the camera frame
+			frame = cv2.resize(frame, (640, 360))
+			
+			if not success:
+				car.stop()
+				break
 			else:
-				ret, buffer = cv2.imencode('.jpg', frame)
-			frame = buffer.tobytes()
-			yield (b'--frame\r\n'
-				   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
-
+				if car.autonom:
+					object_status = ssd.detection(frame)
+					lane_status = lane_detec(frame)
+					# car.autonom_control(object_status)
+					car.autonom_control(object_status, lane_status)
+					ret, buffer = cv2.imencode('.jpg', object_status[0])
+				else:
+					ret, buffer = cv2.imencode('.jpg', frame)
+				frame = buffer.tobytes()
+				yield (b'--frame\r\n'
+					b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
 @app.route('/set_status/<key>')
 def set_status(key):
@@ -58,6 +58,13 @@ def set_start(key):
 		car.start()
 	return ""
 
+@app.route('/set_camera/<key>')
+def set_start(key):
+	if key == '0':
+		car.cam_stop()
+	elif key == '1':
+		car.cam_start()
+	return ""
 
 @app.route('/controller/<key>')
 def controller(key):
