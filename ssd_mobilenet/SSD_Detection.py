@@ -26,7 +26,7 @@ class SSD_Detection:
 			cv2.putText(frame, "{} - {}".format(class_name, obj.Confidence),
 						(int(obj.Left), int(obj.Top)-10), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 255, 0), 2)
 
-			distance_ratio = 360 / (int(obj.Bottom)-int(obj.Top))
+			# distance_ratio = 360 / (int(obj.Bottom)-int(obj.Top))
 			if (class_name == "traffic light"):
 				# x1 = left
 				# y1 = top
@@ -34,13 +34,13 @@ class SSD_Detection:
 				# y2 = bottom
 				trafic_status = colorDetect(
 					frame[int(obj.Top):int(obj.Bottom), int(obj.Left):int(obj.Right)].copy())
-				if distance_ratio < 2:
-					trafic_status[3] = 1
-				print(trafic_status, distance_ratio)
+				# if distance_ratio < 2:
+				# 	trafic_status[3] = 1
+				# print(trafic_status, distance_ratio)
 
 			if (class_name == "person"):
-				if distance_ratio < 15:
-					person_status = 1
+				# if distance_ratio < 15:
+				person_status = 1
 			# cv2.rectangle(frame, (int(obj.Left), int(obj.Bottom)), (int(obj.Right), int(obj.Top)), (0,0,255), 2)
 
 		cv2.putText(frame, "FPS : {}".format(self.net.GetNetworkFPS()),

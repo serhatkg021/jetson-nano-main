@@ -28,6 +28,6 @@ class Servo_Motor:
 
     def servo_rotate_value(self, rotate_value):
         # gelen dönme değeri, -1 ile +1 arasında ki değere e göre sola veya sağa dönüş miktarı hesaplacanak
-        leftorright_rotate_value = (rotate_value * 6.25) * 0.4
+        leftorright_rotate_value = (rotate_value * 2.25) * 0.66666667
         leftorright_rotate_value = global_variables.DEFAULT_SERVO_ANGLE_VALUE - leftorright_rotate_value            
         self.pwm.ChangeDutyCycle(leftorright_rotate_value)

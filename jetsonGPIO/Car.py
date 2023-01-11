@@ -16,7 +16,6 @@ class CarController:
 	def start(self):
 		self.dc_motor.start()
 		self.servo.start()  # araba çalıştığında servoda çalışsın
-		self.cam_stop()
 
 	def stop(self):
 		self.dc_motor.stop()
@@ -42,17 +41,22 @@ class CarController:
 
 	# def autonom_control(self, object_status):
 	def autonom_control(self, object_status, lane_status):
-		# if (object_status[1][0] == 1 and object_status[1][3] == 1):
-		if (lane_status == " " or (object_status[1][0] == 1 and object_status[1][3] == 1)):
-			self.pause()
-		else:
-			self.servo.servo_rotate_value(lane_status)
-			self.front_drive()
+		try:
+			# if (object_status[1][0] == 1 and object_status[1][3] == 1):
+			if (lane_status == " " or object_status[1][0] == 1 or object_status[2] == 1):
+				print("YOL - TRAFIK KIRMIZI")
+				self.pause()
+			else:
+				print("YOL MUSAIT")
+				self.servo.servo_rotate_value(lane_status)
+				self.front_drive()
 
-		if (object_status[1][0] == 1 or object_status[1][1] == 1 or object_status[2] == 1):
-			# print("yavaşla işik kirmizi veya sari")
-			self.dc_motor.gear(1)
-		else:
-			self.dc_motor.gear(2)
+			if (object_status[1][0] == 1 or object_status[1][1] == 1):
+				print("yavaşla işik kirmizi veya sari")
+				self.dc_motor.gear(0.5)
+			else:
+				self.dc_motor.gear(1)
+		except:
+			print("otonom hata")
 
 

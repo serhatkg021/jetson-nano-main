@@ -36,6 +36,7 @@ def gen_frames():  # generate frame by frame from camera
 					car.autonom_control(object_status, lane_status)
 					ret, buffer = cv2.imencode('.jpg', object_status[0])
 				else:
+					# lane_status = lane_detec(frame)
 					ret, buffer = cv2.imencode('.jpg', frame)
 				frame = buffer.tobytes()
 				yield (b'--frame\r\n'
@@ -59,7 +60,7 @@ def set_start(key):
 	return ""
 
 @app.route('/set_camera/<key>')
-def set_start(key):
+def set_camera(key):
 	if key == '0':
 		car.cam_stop()
 	elif key == '1':

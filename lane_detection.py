@@ -133,7 +133,7 @@ def lane_detec(image):
         img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # rgb kopya
         # cv2.imshow("gray", im)
 
-        # masked_white = cv2.inRange(im,180,255)
+        #masked_white = cv2.inRange(im,180,255)
         # cv2.imshow("masked-white", masked_white)
 
         # Gaussian Blur
